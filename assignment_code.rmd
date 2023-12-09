@@ -1,0 +1,35 @@
+library(tidyverse)
+library(caret)
+
+data <- read.csv(file.choose(),header = TRUE) 
+
+data_new <- data %>% select(user_name, contains("accel"), classe) %>% select(!contains("var"))
+
+set.seed(31231)
+
+inTrain <- createDataPartition(data_new$classe, p = 0.80, list = FALSE)
+
+training <- data_new[inTrain,]
+testing <- data_new[-inTrain,]
+
+preprocesseddata <- preProcess(training, method = "pca", thresh = 0.8)
+
+training_pca <- predict(preprocesseddata, training)
+
+
+library(randomForest)
+
+set.seed(31231)
+model_rf <- train(classe ~ ., method = "rf", data = training_pca)
+
+
+
+model_rf$finalModel
+
+#Testing the Model
+new_test <- predict(preprocesseddata, testing)
+
+predict_rf <- predict(model_rf, new_test)
+
+confusionmatrix_rf <- confusionMatrix(as.factor(testing$classe), predict_rf)
+

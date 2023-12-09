@@ -1,17 +1,7 @@
-# r-assessment
-Assessment for coursera
-
-library(caret);
-library(kernlab);
-
-library (ggplot2);
-# import and store the dataset in data1
-testingData <- read.csv("pml-testing.csv", header=T);
-
-# import and store the dataset in data1
-trainingData <- read.csv("pml-training.csv", header=T);
-
-
-modFit <- train(trainingData ~., method="rpart", data="training")
-
-predict(modFit, newData=testingData)
+Data prediction Steps:-
+- The training file is (pml-training.csv) is downloaded and preprocessed to omit the NA values.
+- Unused columns such as user_name and raw_timestamp_part_1 are omitted.
+- We formulated training and test sets by splitting the data into 80% for training and 20% for testing respectively.
+- We performed random forest and decision tree algorithms.
+- In the end, we found that random forest performed better than decision tree
+- We built the confusion matrix as well for the same.
